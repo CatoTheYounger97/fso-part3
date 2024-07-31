@@ -85,7 +85,7 @@ app.post("/api/persons", (request, response) => {
     });
   }
 
-  const newid = Math.floor(Math.random() * 100000);
+  const newid = Math.floor(Math.random() * 100000).toString();
   const person = {
     name: body.name,
     number: body.number,
