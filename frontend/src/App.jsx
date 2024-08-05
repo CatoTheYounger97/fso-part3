@@ -43,12 +43,16 @@ const Form = ({ props }) => {
         setNewName("");
         setNewNumber("");
 
-        showNotificationFiveSec(`Added ${response.data.name}`);
+        showNotificationFiveSec(`Added ${response.data.name}`, "green");
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+        showNotificationFiveSec(error.response.data.error, "red");
       });
   };
 
-  const showNotificationFiveSec = (message) => {
-    setNotifyColor("green");
+  const showNotificationFiveSec = (message, color) => {
+    setNotifyColor(color);
     setNotifyMessage(message);
     setTimeout(() => {
       setNotifyMessage(null);
@@ -60,13 +64,18 @@ const Form = ({ props }) => {
       name: person.name,
       number: newNumber,
     };
-    personService.update(person.id, updatedPerson).then(() => {
-      personService.getAll().then((response) => setPersons(response));
-      setNewName("");
-      setNewNumber("");
+    personService
+      .update(person.id, updatedPerson)
+      .then(() => {
+        personService.getAll().then((response) => setPersons(response));
+        setNewName("");
+        setNewNumber("");
 
-      showNotificationFiveSec(`Updated number for ${person.name}`);
-    });
+        showNotificationFiveSec(`Updated number for ${person.name}`);
+      })
+      .catch((error) => {
+        showNotificationFiveSec(error.response.data.error, "red");
+      });
   };
 
   return (
